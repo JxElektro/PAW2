@@ -1,11 +1,28 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store';
-
+import { View, Text, Button, StyleSheet, ScrollView } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, AppDispatch } from '../store';
+import { updatePetProfileWithAI } from '../store/petSlice';
 const PetProfile: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const { pets, selectedPetId } = useSelector((state: RootState) => state.pets);
   const pet = selectedPetId ? pets[selectedPetId] : null;
+
+  // Simulación de uso de IA
+  const handleAIUpdate = () => {
+    const aiGeneratedProfile = {
+      nombre: 'Fluffy',  // Ejemplo de perfil generado por IA
+      especie: 'Perro',
+      raza: 'Golden Retriever',
+      edad: '3 años',
+      sexo: 'Macho',
+      color: 'Dorado',
+    };
+    
+    if (selectedPetId) {
+      dispatch(updatePetProfileWithAI({ id: selectedPetId, aiGeneratedProfile }));
+    }
+  };
 
   if (!pet) {
     return (
@@ -25,7 +42,8 @@ const PetProfile: React.FC = () => {
         <Text style={styles.infoItem}>Sex: {pet.perfil.sexo}</Text>
         <Text style={styles.infoItem}>Color: {pet.perfil.color}</Text>
       </View>
-      {/* Add more pet information here */}
+      <Button title="Actualizar con IA" onPress={handleAIUpdate} />
+      <Button title="Editar Perfil Manualmente" onPress={() => {/* Lógica para editar manualmente */}} />
     </ScrollView>
   );
 };

@@ -1,26 +1,11 @@
+// src/slices/petsSlice.ts
+
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-
-interface PetProfile {
-  nombre: string;
-  especie: string;
-  raza: string;
-  edad: string;
-  sexo: string;
-  color: string;
-}
-
-interface PetState {
-  perfil: PetProfile;
-}
-
-interface PetsState {
-  pets: Record<string, PetState>;
-  selectedPetId: string | null;
-}
+import { PetsState, PetState, PetProfile } from '../types/PetProfile';
 
 const initialState: PetsState = {
   pets: {},
-  selectedPetId: null
+  selectedPetId: null,
 };
 
 export const petsSlice = createSlice({
@@ -35,9 +20,14 @@ export const petsSlice = createSlice({
     },
     updatePetProfile: (state, action: PayloadAction<{ id: string; profile: Partial<PetProfile> }>) => {
       if (state.pets[action.payload.id]) {
-        state.pets[action.payload.id].perfil = { ...state.pets[action.payload.id].perfil, ...action.payload.profile };
+        state.pets[action.payload.id].perfil = {
+          ...state.pets[action.payload.id].perfil,
+          ...action.payload.profile,
+        };
       }
     },
+
+    
     selectPet: (state, action: PayloadAction<string>) => {
       state.selectedPetId = action.payload;
     },

@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Provider } from 'react-redux';
 import { store } from './src/store';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import { MaterialIcons } from '@expo/vector-icons'; // Usamos MaterialIcons
 
 import Dashboard from './src/screens/Dashboard';
 import PetProfile from './src/screens/PetProfile';
@@ -22,8 +22,9 @@ const MainTabs = () => (
       component={Dashboard} 
       options={{
         tabBarIcon: ({ color, size }) => (
-          <Icon name="home" color={color} size={size} />
+          <MaterialIcons name="dashboard" color={color} size={size} />  // Icono de dashboard
         ),
+        headerShown: false, // Ocultar header
       }}
     />
     <Tab.Screen 
@@ -31,8 +32,9 @@ const MainTabs = () => (
       component={Calendar}
       options={{
         tabBarIcon: ({ color, size }) => (
-          <Icon name="calendar" color={color} size={size} />
+          <MaterialIcons name="calendar-today" color={color} size={size} />  // Icono de calendario
         ),
+        headerShown: false, // Ocultar header
       }}
     />
     <Tab.Screen 
@@ -40,8 +42,9 @@ const MainTabs = () => (
       component={Community}
       options={{
         tabBarIcon: ({ color, size }) => (
-          <Icon name="users" color={color} size={size} />
+          <MaterialIcons name="people" color={color} size={size} />  // Icono de comunidad
         ),
+        headerShown: false, // Ocultar header
       }}
     />
     <Tab.Screen 
@@ -49,8 +52,9 @@ const MainTabs = () => (
       component={AIBitacora}
       options={{
         tabBarIcon: ({ color, size }) => (
-          <Icon name="robot" color={color} size={size} />
+          <MaterialIcons name="smart-toy" color={color} size={size} />  // Icono de robot (IA)
         ),
+        headerShown: false, // Ocultar header
       }}
     />
   </Tab.Navigator>
@@ -64,9 +68,13 @@ const App = () => {
           <Stack.Screen 
             name="Main" 
             component={MainTabs} 
-            options={{ headerShown: false }}
+            options={{ headerShown: false }}  // Ya está oculto correctamente
           />
-          <Stack.Screen name="PetProfile" component={PetProfile} />
+          <Stack.Screen 
+            name="PetProfile" 
+            component={PetProfile}
+            options={{ headerShown: false }}  // Asegurarse de que el header esté oculto también aquí
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
