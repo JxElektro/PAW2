@@ -1,10 +1,13 @@
+// src/screens/Dashboard.tsx
+
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { colors, fonts } from '../styles/theme'; // Importar correctamente
+import { MaterialIcons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { RootState } from '../store';
 import { selectPet } from '../store/petSlice';
+import { useNavigation } from '@react-navigation/native';
 
 const Dashboard: React.FC = () => {
   const navigation = useNavigation();
@@ -27,7 +30,7 @@ const Dashboard: React.FC = () => {
           <Text style={styles.subtitle}>Tus mascotas:</Text>
           {Object.entries(pets).map(([id, pet]) => (
             <TouchableOpacity key={id} style={styles.petItem} onPress={() => handlePetSelect(id)}>
-              <Text>{pet.perfil.nombre}</Text>
+              <Text style={styles.petName}>{pet.perfil.basicInfo.nombre}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -37,7 +40,7 @@ const Dashboard: React.FC = () => {
         style={styles.addButton}
         onPress={() => navigation.navigate('AIBitacora' as never)}
       >
-        <Icon name="plus" size={20} color="white" />
+        <MaterialIcons name="add" size={20} color="white" />
         <Text style={styles.addButtonText}>
           Agregar {Object.keys(pets).length === 0 ? 'tu primera mascota' : 'nueva mascota'}
         </Text>
@@ -52,39 +55,57 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: colors.background,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: '700',
+    color: colors.primary,
     marginBottom: 20,
+    textAlign: 'center',
+    fontFamily: fonts.bold,
   },
   message: {
     fontSize: 16,
+    color: colors.text,
     marginBottom: 20,
+    textAlign: 'center',
+    fontFamily: fonts.regular,
   },
   subtitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: '700',
+    color: colors.primary,
     marginBottom: 10,
+    fontFamily: fonts.bold,
   },
   petItem: {
     padding: 10,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: colors.muted,
     borderRadius: 5,
     marginBottom: 10,
+    backgroundColor: colors.surface,
+  },
+  petName: {
+    fontSize: 16,
+    color: colors.text,
+    fontFamily: fonts.regular,
   },
   addButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#4CAF50',
+    backgroundColor: colors.primary,
     padding: 10,
     borderRadius: 5,
     marginTop: 20,
+    justifyContent: 'center',
   },
   addButtonText: {
     color: 'white',
     marginLeft: 10,
+    fontSize: 16,
+    fontFamily: fonts.bold,
   },
 });
 

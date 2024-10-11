@@ -1,11 +1,22 @@
 // src/screens/AIBitacora.tsx
 
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, Button, ScrollView, StyleSheet } from 'react-native';
+import { 
+  KeyboardAvoidingView, 
+  Platform, 
+  View, 
+  Text, 
+  TextInput, 
+  TouchableOpacity, 
+  ScrollView, 
+  StyleSheet 
+} from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState, AppDispatch } from '../store';
 import { updatePetProfile } from '../store/petSlice';
+import { globalStyles } from '../styles/globalStyles';
+import { colors } from '../styles/theme'; // Importar colors desde theme.ts
 
 interface Message {
   sender: 'user' | 'ai';
@@ -82,14 +93,17 @@ const AIBitacora: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView 
+      style={globalStyles.container} 
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+    >
       {/* Ícono de robot en la parte superior */}
-      <View style={styles.iconContainer}>
-        <MaterialIcons name="smart-toy" size={50} color="blue" />
-        <Text style={styles.title}>AIBitacora</Text>
+      <View style={styles.header}>
+        <MaterialIcons name="smart-toy" size={40} color={colors.primary} />
+        <Text style={globalStyles.title}>Pawa Bitácora</Text>
       </View>
 
-      <ScrollView style={styles.chatContainer}>
+      <ScrollView style={styles.chatContainer} contentContainerStyle={{ paddingBottom: 20 }}>
         {messages.map((message, index) => (
           <View
             key={index}
@@ -99,68 +113,105 @@ const AIBitacora: React.FC = () => {
             ]}
           >
             <Text style={message.sender === 'user' ? styles.userMessage : styles.aiMessage}>
-              {message.sender === 'user' ? 'Tú' : 'IA'}: {message.text}
+              {message.sender === 'user' ? 'Tú' : 'Pawa'}: {message.text}
             </Text>
           </View>
         ))}
       </ScrollView>
 
-      <TextInput
-        style={styles.input}
-        value={inputText}
-        onChangeText={setInputText}
-        placeholder="Escribe tu respuesta"
-      />
-      <Button title="Enviar" onPress={handleSendMessage} />
-    </View>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.input}
+          value={inputText}
+          onChangeText={setInputText}
+          placeholder="Escribe tu respuesta"
+          placeholderTextColor="#888"
+          accessible={true}
+          accessibilityLabel="Campo de entrada de texto"
+        />
+        <TouchableOpacity 
+          style={styles.sendButton} 
+          onPress={handleSendMessage} 
+          accessible={true} 
+          accessibilityLabel="Botón de enviar"
+        >
+          <MaterialIcons name="send" size={24} color="#fff" />
+        </TouchableOpacity>
+      </View>
+    </KeyboardAvoidingView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-  iconContainer: {
+  header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginLeft: 10,
   },
   chatContainer: {
     flex: 1,
     marginBottom: 10,
   },
   messageContainer: {
-    marginBottom: 10,
-    padding: 10,
-    borderRadius: 10,
+    maxWidth: '80%',
+    marginBottom: 12,
+    padding: 12,
+    borderRadius: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
   userContainer: {
     alignSelf: 'flex-end',
-    backgroundColor: '#DCF8C6',
+    backgroundColor: colors.primary,
+    borderTopRightRadius: 0,
   },
   aiContainer: {
     alignSelf: 'flex-start',
-    backgroundColor: '#ECECEC',
+    backgroundColor: colors.secondary,
+    borderTopLeftRadius: 0,
   },
   userMessage: {
-    color: '#000',
+    color: '#fff',
+    fontSize: 16,
+    fontFamily: 'Roboto-Bold',
   },
   aiMessage: {
-    color: '#000',
+    color: '#333333',
+    fontSize: 16,
+    fontFamily: 'Roboto-Regular',
+  },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    borderRadius: 25,
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 5,
+    elevation: 3,
+    marginBottom: 10,
   },
   input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
+    flex: 1,
+    fontSize: 16,
+    color: '#333333',
+    paddingVertical: 5,
+    fontFamily: 'Roboto-Regular',
+  },
+  sendButton: {
+    backgroundColor: colors.primary,
+    borderRadius: 20,
     padding: 10,
-    borderRadius: 5,
-    marginBottom: 10,
+    marginLeft: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });
 

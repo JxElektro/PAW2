@@ -26,14 +26,20 @@ export const petsSlice = createSlice({
         };
       }
     },
-
-    
+    updatePetProfileWithAI: (state, action: PayloadAction<{ id: string; aiGeneratedProfile: Partial<PetProfile> }>) => {
+      if (state.pets[action.payload.id]) {
+        state.pets[action.payload.id].perfil = {
+          ...state.pets[action.payload.id].perfil,
+          ...action.payload.aiGeneratedProfile,
+        };
+      }
+    },
     selectPet: (state, action: PayloadAction<string>) => {
       state.selectedPetId = action.payload;
     },
   },
 });
 
-export const { addPet, updatePetProfile, selectPet } = petsSlice.actions;
+export const { addPet, updatePetProfile, updatePetProfileWithAI, selectPet } = petsSlice.actions;
 
 export default petsSlice.reducer;

@@ -1,0 +1,32 @@
+{
+  "expo": {
+    "name": "Pawa",
+    "slug": "pawa-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/splashscreen.jpg", 
+    "splash": {
+      "image": "./src/assets/splashscreen.jpg",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/splashscreen.jpg",
+        "backgroundColor": "#ffffff"
+      }
+    },
+    "web": {
+      "favicon": "./src/assets/splashscreen.jpg"
+    }
+  }
+}

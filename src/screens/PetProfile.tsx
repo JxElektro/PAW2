@@ -1,8 +1,13 @@
+// src/screens/PetProfile.tsx
+
 import React from 'react';
 import { View, Text, Button, StyleSheet, ScrollView } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState, AppDispatch } from '../store';
 import { updatePetProfileWithAI } from '../store/petSlice';
+import { globalStyles } from '../styles/globalStyles';
+import { colors, fonts } from '../styles/theme'; // Importar correctamente
+
 const PetProfile: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { pets, selectedPetId } = useSelector((state: RootState) => state.pets);
@@ -14,9 +19,10 @@ const PetProfile: React.FC = () => {
       nombre: 'Fluffy',  // Ejemplo de perfil generado por IA
       especie: 'Perro',
       raza: 'Golden Retriever',
-      edad: '3 años',
+      edad: 3,
       sexo: 'Macho',
       color: 'Dorado',
+      // Puedes agregar más campos según sea necesario
     };
     
     if (selectedPetId) {
@@ -26,46 +32,47 @@ const PetProfile: React.FC = () => {
 
   if (!pet) {
     return (
-      <View style={styles.container}>
-        <Text>No pet selected</Text>
+      <View style={globalStyles.container}>
+        <Text style={globalStyles.text}>No pet selected</Text>
       </View>
     );
   }
 
   return (
-    <ScrollView style={styles.container}>
-      <Text style={styles.title}>{pet.perfil.nombre}'s Profile</Text>
+    <ScrollView style={globalStyles.container}>
+      <Text style={globalStyles.title}>{pet.perfil.basicInfo.nombre}'s Profile</Text>
       <View style={styles.infoContainer}>
-        <Text style={styles.infoItem}>Species: {pet.perfil.especie}</Text>
-        <Text style={styles.infoItem}>Breed: {pet.perfil.raza}</Text>
-        <Text style={styles.infoItem}>Age: {pet.perfil.edad}</Text>
-        <Text style={styles.infoItem}>Sex: {pet.perfil.sexo}</Text>
-        <Text style={styles.infoItem}>Color: {pet.perfil.color}</Text>
+        <Text style={globalStyles.text}>Species: {pet.perfil.basicInfo.especie}</Text>
+        <Text style={globalStyles.text}>Breed: {pet.perfil.basicInfo.raza}</Text>
+        <Text style={globalStyles.text}>Age: {pet.perfil.basicInfo.edad}</Text>
+        <Text style={globalStyles.text}>Sex: {pet.perfil.basicInfo.sexo}</Text>
+        <Text style={globalStyles.text}>Color: {pet.perfil.basicInfo.color}</Text>
+        {/* Puedes agregar más campos aquí */}
       </View>
-      <Button title="Actualizar con IA" onPress={handleAIUpdate} />
-      <Button title="Editar Perfil Manualmente" onPress={() => {/* Lógica para editar manualmente */}} />
+      <View style={styles.buttonContainer}>
+        <Button title="Actualizar con IA" onPress={handleAIUpdate} color={colors.primary} />
+        <Button title="Editar Perfil Manualmente" onPress={() => {/* Lógica para editar manualmente */}} color={colors.primary} />
+      </View>
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 20,
-  },
   infoContainer: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: colors.surface,
     padding: 15,
     borderRadius: 10,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
-  infoItem: {
-    fontSize: 16,
-    marginBottom: 10,
+  buttonContainer: {
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    height: 100,
   },
 });
 
